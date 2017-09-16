@@ -1,3 +1,4 @@
+
 fout = open ("collect.out", "w")
 fin = open ("collect.in", "r")
 
@@ -21,8 +22,9 @@ requests = map(lambda x: int(x), fin.readline().split())
 
 for r in requests:
     lb = lower_bound (collection, r)
-    if lb > m or collection[lb]!=r:
+    if lb >= n or collection[lb]!=r:
         fout.write("NO\n")
     else:
         fout.write("YES\n")
+        
         
