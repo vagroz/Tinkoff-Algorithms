@@ -10,6 +10,7 @@ for i in range (n):
     if l>right:
         right=l
     mas.append(l)
+right +=1
 
 def count(length):
     summ = 0
@@ -24,5 +25,6 @@ while left+1<right:
     else:
         right=mid
 fout.write(str(left))
+print left
 
     
