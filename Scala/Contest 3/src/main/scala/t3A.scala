@@ -23,7 +23,7 @@ object t3A extends App {
       sum += getWays(i-j)
     cells(i)=sum
   }
-//  println(cells(N-1).toString)
+//  println(cells(N-1))
   val fw = new FileWriter("grasshopper.out")
   fw.write(cells(N-1).toString)
   fw.close()
