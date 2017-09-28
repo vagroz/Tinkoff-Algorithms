@@ -1,14 +1,20 @@
 import scala.io.StdIn.readLine
+import scala.math.BigInt
 
 object t3C extends App {
   val input = readLine().split(" ").map(_.toInt)
   val (x,y) = (input(0), input(1))
-  val mas = Array.ofDim[Long](x,y)
+  val mas = Array.ofDim[BigInt](x,y)
+  for (i <- 0 until x){
+    for (j <- 0 until y){
+      mas(i)(j) = 0
+    }
+  }
   mas(0)(0) = 1
 
-  def setValue(i: Int,j: Int, vl: Long) {
+  def setValue(i: Int,j: Int, vl: BigInt) {
     if (i>=0 && i<x && j>=0 && j<y)
-      mas(i)(j)+=vl
+      mas(i)(j) = vl + mas(i)(j)
   }
 
   def propogateWays(i: Int, j: Int){
