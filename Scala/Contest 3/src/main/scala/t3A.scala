@@ -3,11 +3,11 @@ import java.io._
 import java.util.Scanner
 
 object t3A extends App {
-//  val N = StdIn.readInt()
-//  val k = StdIn.readInt()
-  val sc = new Scanner(new File ("grasshopper.in"))
-  val N = sc.nextInt()
-  val k = sc.nextInt()
+  val N = StdIn.readInt()
+  val k = StdIn.readInt()
+//  val sc = new Scanner(new File ("grasshopper.in"))
+//  val N = sc.nextInt()
+//  val k = sc.nextInt()
 
   val cells = new Array[Int](N)
 
@@ -23,8 +23,8 @@ object t3A extends App {
       sum += getWays(i-j)
     cells(i)=sum
   }
-//  println(cells(N-1))
-  val fw = new FileWriter("grasshopper.out")
-  fw.write(cells(N-1).toString)
-  fw.close()
+  println(cells(N-1))
+//  val fw = new FileWriter("grasshopper.out")
+//  fw.write(cells(N-1).toString)
+//  fw.close()
 }

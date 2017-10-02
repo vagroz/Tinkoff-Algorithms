@@ -18,30 +18,45 @@ object t3D extends App {
   val olenenok = olenenok1.toVector.map(_.toVector)
   dp(0)(0) = olenenok(0)(0)
 
+
+
   def app(x: Int, y: Int, value: Int): Unit = {
     if (x >= 0 && y >= 0 && x < N && y < M) {
       dp(x)(y) = min(value + olenenok(x)(y), dp(x)(y))
+
     }
   }
 
   def func(x: Int, y: Int): Unit = {
+    //println (s"Get: {$x, $y}")
     if (x < 0 || y >= M) {
       val n = x + y
+      //println (s"Out of range, pass: {${n+1}, ${0}}")
       func(n + 1, 0)
     } else if (x >= N) {
-      func(N - 1, y + x - N)
+      //println (s"too much, pass: {${N-1}, ${y+x-N+1}}")
+      func(N - 1, y + x - N + 1)
     } else {
+      //println (s"Write in: [$x, $y]")
       val a = x + 1
       val b = y + 1
       val value = dp(x)(y)
       app(x, b, value)
       app(a, y, value)
-      if (x != N - 1 && y != M - 1)
+      if (x != N - 1 || y != M - 1){
+        //println (s"Pass: {${x-1}, ${y+1}}")
         func(x - 1, y + 1)
+      }
     }
   }
 
+
   func(0, 0)
+  /*for (i <- 0 until N){
+    for (j <- 0 until M)
+      print (s"${dp(i)(j)} ")
+    println
+  }*/
   println(dp(N - 1)(M - 1))
 
   val n = N + M - 2
