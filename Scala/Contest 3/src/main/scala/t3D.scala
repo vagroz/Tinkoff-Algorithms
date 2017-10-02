@@ -3,14 +3,13 @@ import scala.io.StdIn
 
 object t3D extends App {
   val n = StdIn.readLine.toInt
-  val dp = (0 to n).map{ x => if (x != 1) (-1, 0) else (0, 0) }.toVector
+  val dp = Vector.fill(n+1)((-1,-1)).updated(1, (0,0))
 
   @tailrec
   def func(dp: Vector[(Int, Int)], number: Int): Vector[(Int, Int)] = {
-    val (last, ways) = dp(number)
+    val (_, ways) = dp(number)
     val nextNums = Seq(number * 2, number * 3, number + 1)
-    val tasks = nextNums.collect{case x if x <= n && (dp(x)._2 == 0 || dp(x)._2 > ways + 1)
-        && dp(x)._2 > ways + 1 =>
+    val tasks = nextNums.collect{case x if x <= n && (dp(x)._2 == -1 || dp(x)._2 > ways + 1) =>
       (x, ways + 1)
     }
     val newDp = tasks.foldLeft(dp){(ddpp, task) =>
