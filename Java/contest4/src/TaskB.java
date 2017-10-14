@@ -18,7 +18,9 @@ public class TaskB {
                 }
             }
         }
-
-        System.out.println(dp[dp.length-1]);
+        int max = 0;
+        for (int e: dp)
+            if (e > max) max = e;
+        System.out.println(max);
     }
 }
