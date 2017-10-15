@@ -17,26 +17,31 @@ public class TaskC {
         int[] data2 = getIntArray(br.readLine());
         int[] data3 = getIntArray(br.readLine());
 
-        int[][][] dp = new int[nmk[0]+1][nmk[1]+1][nmk[2]+1];
+        int[][] dpOld = new int[nmk[1]+1][nmk[2]+1];
+        int[][] dpNext = new int[nmk[1]+1][nmk[2]+1];
 
         for (int i = 1; i <= nmk[0]; i++) {
+            dpNext = new int[nmk[1]+1][nmk[2]+1];
             for (int j = 1; j <= nmk[1]; j++) {
                 for (int k = 1; k <= nmk[2]; k++) {
                     if (data1[i-1] == data2[j-1] && data2[j-1] == data3[k-1])
-                        dp[i][j][k] = dp[i-1][j-1][k-1] + 1;
-                    else {
-                        int a = dp[i-1][j][k];
-                        int b = dp[i][j-1][k];
-                        int c = dp[i][j][k-1];
 
-                        dp[i][j][k] = Math.max(a, Math.max(b, c));
+                    {
+                        dpNext[j][k] = dpOld[j-1][k-1] + 1;
+                    }
+                    else {
+                        int a = dpOld[j][k];
+                        int b = dpNext[j-1][k];
+                        int c = dpNext[j][k-1];
+                        dpNext[j][k] = Math.max(a, Math.max(b, c));
                     }
                 }
             }
+            dpOld = dpNext;
         }
-        System.out.println(dp[nmk[0]][nmk[1]][nmk[2]]);
+//        System.out.println(dp[nmk[0]][nmk[1]][nmk[2]]);
         FileWriter fw = new FileWriter("cinema.out");
-        fw.write(dp[nmk[0]][nmk[1]][nmk[2]]+"\n");
+        fw.write(dpNext[nmk[1]][nmk[2]]+"\n");
         fw.close();
     }
 
