@@ -46,7 +46,7 @@ public class TaskE {
             int[] resultMas = new int[res];
             for (int i = 0; i < res-1; i++){
                 for (int e: inputMas){
-                    if (dp[currentSum]-dp[currentSum-e]==1){
+                    if (e < currentSum && dp[currentSum]-dp[currentSum-e]==1){
                         resultMas[i] = e;
                         currentSum -= e;
                         break;
@@ -57,6 +57,7 @@ public class TaskE {
             for(int e: resultMas)
                 fw.write(e+" ");
         }catch(NegativeArraySizeException e){}
+
         fw.close();
     }
 }
