@@ -11,7 +11,7 @@ public class TaskC {
     }
     public static void main(String[] args) throws IOException {
 //        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("cinema.in")));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("lcstr.in")));
         int[] nmk = getIntArray(br.readLine());
         int[] data1 = getIntArray(br.readLine());
         int[] data2 = getIntArray(br.readLine());
