@@ -1,26 +1,18 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 
 public class taskE {
     static Vector<Integer>[] graph;
     static boolean detailIsDone[];
-    static int weights[];
+    static BigInteger weights[];
 
-    static int bfs(int t){
-        LinkedList<Integer> bfsQ = new LinkedList<Integer>();
-        bfsQ.add(t);
-        int totalTime = 0;
-        while (!bfsQ.isEmpty()){
-            int x = bfsQ.remove();
-            if (!detailIsDone[x]){
-                detailIsDone[x] = true;
-                totalTime += weights[x];
-                for (int j: graph[x])
-                    bfsQ.add(j);
-
-            }
+    static void dfs(int t){
+        detailIsDone[t] = true;
+        for (int next: graph[t]){
+            if(!detailIsDone[next])
+                dfs(next);
         }
-        return totalTime;
     }
 
     public static void main(String[] args) throws IOException{
@@ -28,9 +20,9 @@ public class taskE {
         String[] inp = br.readLine().split(" ");
         int N = inp.length;
         graph = new Vector[N];
-        weights = new int[N];
+        weights = new BigInteger[N];
         for (int i = 0; i < N; i++) {
-            weights[i] = Integer.parseInt(inp[i]);
+            weights[i] = new BigInteger(inp[i]);
         }
         for (int i = 0; i < N; i++)
             graph[i] = new Vector<Integer>();
@@ -38,16 +30,28 @@ public class taskE {
         detailIsDone = new boolean[N];
 
         for (int i = 0; i < N; i++) {
-            inp = br.readLine().split(" ");
-            if (!inp[0].equals(""))
-                for (String t: inp)
+            String in = br.readLine();
+            if (in != null && !in.equals(""))
+                for (String t: in.split(" "))
                     graph[i].add(Integer.parseInt(t) - 1);
         }
 
-        int res = bfs(0);
+        dfs(0);
+        //int last = 0;
+        //int res = 0
+        BigInteger res = BigInteger.ZERO;
+        for(int i = 0; i < N; i++) {
+            /*if (res < last)
+                throw new ArithmeticException("Need a BigInteger!");*/
+            if (detailIsDone[i]){
+                res = res.add(weights[i]);
+            }
+        }
+
+
 
         FileWriter fw = new FileWriter(new File("details.out"));
-        fw.write(res+"\n");
+        fw.write(res.toString());
 
         fw.close();
 
