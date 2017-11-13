@@ -31,10 +31,12 @@ public class TaskJ {
         }
 
 
-        //в distance храним минимальную стоимость бензина,
-        //за которую можем оказаться в этом городе с пустым баком
+        //в emptyDist храним минимальную стоимость бензина,
+        //за которую можем оказаться в этом городе с пустыми баком и канистрой
+        //в fullDist - с одним запасом
         TreeSet<Vertice> verticeSet = new TreeSet<Vertice>();
-        cities[1].distance = 0;
+        cities[1].emptyCanisterDist = 0;
+        cities[1].fullCanisterDist = cities[1].getPrice();
         verticeSet.add(cities[1]);
 
         //dijkstra
@@ -42,18 +44,17 @@ public class TaskJ {
             Vertice v = verticeSet.pollFirst();
             int price = v.getPrice();
             for (Vertice w: v.neighbors){
-                //путь1: в v заправили только бак
-                if (v.distance + price < w.distance) {
-                    w.distance = v.distance + price;
+                //1) едем оптимально к соседу с полным баком и канистрой
+                long priceFull = Math.min(v.fullCanisterDist + price, v.emptyCanisterDist + 2*price);
+                if(w.fullCanisterDist > priceFull){
+                    w.fullCanisterDist = priceFull;
                     verticeSet.add(w);
                 }
-
-                //путь2: в v заправили бак и канистру
-                for(Vertice w2: w.neighbors){
-                    if (w2.distance > v.distance + 2*price){
-                        w2.distance = v.distance + 2*price;
-                        verticeSet.add(w2);
-                    }
+                //2) едем оптимально к соседу с пустой канистрой
+                long priceEmpty = Math.min(v.emptyCanisterDist + price, v.fullCanisterDist);
+                if(w.emptyCanisterDist > priceEmpty){
+                    w.emptyCanisterDist = priceEmpty;
+                    verticeSet.add(w);
                 }
             }
         }
@@ -61,10 +62,10 @@ public class TaskJ {
 
 
         FileWriter fw = new FileWriter(new File(fileName + ".out"));
-        if (cities[N].distance == Long.MAX_VALUE)
+        if (cities[N].emptyCanisterDist == Long.MAX_VALUE)
             fw.write("-1\n");
         else
-            fw.write(cities[N].distance + "\n");
+            fw.write(cities[N].emptyCanisterDist + "\n");
         fw.close();
     }
 }
@@ -74,20 +75,23 @@ class Vertice implements Comparable<Vertice> {
     Vertice(int number, int price) {
         v = number;
         this.price = price;
-        distance = Long.MAX_VALUE;
+        emptyCanisterDist = Long.MAX_VALUE;
+        fullCanisterDist = Long.MAX_VALUE;
         neighbors = new Vector<Vertice>();
     }
 
     private int v;
     private int price;
-    long distance;
+    long emptyCanisterDist, fullCanisterDist; //цена добраться в этот город с пустой/полной канистрой
     Vector<Vertice> neighbors;
 
     @Override
     public int compareTo(Vertice o) {
-        if (this.distance - o.distance < 0)
+        long thisDist = Math.min(this.emptyCanisterDist, this.fullCanisterDist);
+        long oDist = Math.min(o.emptyCanisterDist, o.fullCanisterDist);
+        if (thisDist - oDist < 0)
             return -1;
-        else if (this.distance == o.distance)
+        else if (thisDist == oDist)
             return this.v - o.v;
         else
             return 1;
